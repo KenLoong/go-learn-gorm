@@ -8,19 +8,19 @@ import (
 	"gorm.io/gorm"
 )
 
-var db *gorm.DB
+var Db *gorm.DB
 
-func Connect(dbName string, username string) error {
+func Connect(dbName string, username string, password string) error {
 	// 参考 https://github.com/go-sql-driver/mysql#dsn-data-source-name 获取详情
-	dsn := "user:%s@tcp(127.0.0.1:3306)/%s?charset=utf8mb4&parseTime=True&loc=Local"
-	dsn = fmt.Sprintf(dsn, username, dbName)
+	dsn := "%s:%s@tcp(127.0.0.1:3306)/%s?charset=utf8mb4&parseTime=True&loc=Local"
+	dsn = fmt.Sprintf(dsn, username, password, dbName)
 	var err error
-	db, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	Db, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		return err
 	}
 	//GORM 使用 database/sql 维护连接池
-	sqlDB, err := db.DB()
+	sqlDB, err := Db.DB()
 	if err != nil {
 		return err
 	}
