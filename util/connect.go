@@ -12,6 +12,7 @@ var Db *gorm.DB
 
 func Connect(dbName string, username string, password string) error {
 	// 参考 https://github.com/go-sql-driver/mysql#dsn-data-source-name 获取详情
+	// 想要正确的处理 time.Time ，您需要带上 parseTime 参数
 	dsn := "%s:%s@tcp(127.0.0.1:3306)/%s?charset=utf8mb4&parseTime=True&loc=Local"
 	dsn = fmt.Sprintf(dsn, username, password, dbName)
 	var err error
@@ -33,4 +34,8 @@ func Connect(dbName string, username string, password string) error {
 	// 设置空闲连接的存活时间
 	sqlDB.SetConnMaxIdleTime(time.Minute * 30)
 	return err
+}
+
+func printLine() {
+	fmt.Println("================")
 }
